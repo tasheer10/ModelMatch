@@ -5,10 +5,10 @@ import os
 import logging # Import logging
 
 # Import your setup function and runner etc.
-from llm_comparator.logging_config import setup_logging, LOG_FORMAT_DETAILED # Import setup function
-from llm_comparator.core import runner
-from llm_comparator.models import list_available_models
-from llm_comparator.utils.helpers import load_json_data
+from model_match.logging_config import setup_logging, LOG_FORMAT_DETAILED # Import setup function
+from model_match.core import runner
+from model_match.models import list_available_models
+from model_match.utils.helper import load_json_data
 # from llm_comparator.config import check_config
 
 # Get a logger for this module

@@ -1,7 +1,7 @@
 import logging # Import logging
 from typing import List, Dict, Any
-from llm_comparator.models import get_model
-from llm_comparator.utils.helpers import format_prompt
+from model_match.models import get_model
+from model_match.utils.helper import format_prompt
 # from llm_comparator.evaluation.human import evaluate_human
 # from llm_comparator.evaluation.reasoning import evaluate_reasoning
 

@@ -1,7 +1,7 @@
 import logging # Import logging
 import openai
-from llm_comparator.models.base import LLM
-from llm_comparator.config import settings
+from model_match.models.base import LLM
+from model_match.config import settings
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)
