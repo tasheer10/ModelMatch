@@ -16,9 +16,7 @@ def setup_logging(level: int = logging.INFO, log_format: str = LOG_FORMAT_DETAIL
         log_format: The format string for log messages.
     """
     # Get the root logger
-    logger = logging.getLogger() # Get the root logger
-    # Or, get a specific logger for your application:
-    # logger = logging.getLogger("llm_comparator")
+    logger = logging.getLogger('ModelMatch') # Get the root logger
 
     # Prevent adding multiple handlers if called multiple times (e.g., in tests)
     if logger.hasHandlers():
@@ -53,12 +51,7 @@ def setup_logging(level: int = logging.INFO, log_format: str = LOG_FORMAT_DETAIL
     # logger.addHandler(file_handler)
 
     # You can also adjust levels for noisy libraries if needed
-    # logging.getLogger("openai").setLevel(logging.WARNING)
-    # logging.getLogger("urllib3").setLevel(logging.INFO)
+    logging.getLogger("openai").setLevel(logging.DEBUG)
+    logging.getLogger("urllib3").setLevel(logging.DEBUG)
 
     logger.debug("Logging setup complete.") # This will only show if level is DEBUG
-
-# Example of getting a specific logger instance for a module
-# You would typically do this within each module like:
-# import logging
-# logger = logging.getLogger(__name__)

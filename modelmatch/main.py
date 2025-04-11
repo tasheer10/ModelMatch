@@ -19,7 +19,7 @@ def main():
     Main function to parse arguments and run the LLM comparison.
     """
     # --- Setup Logging FIRST ---
-    # You could potentially control the level via CLI arg later
+    # We could potentially control the level via CLI arg later
     # For now, default to INFO level
     setup_logging(level=logging.INFO, log_format=LOG_FORMAT_DETAILED)
 
@@ -63,7 +63,7 @@ def main():
     # Optional: Run configuration checks at the start
     # check_config()
 
-    logger.info("--- LLM Comparator Initializing ---")
+    logger.info("--- ModelMatch Initializing ---")
     logger.info(f"Input file: {args.input_file}")
     logger.info(f"Evaluation method: {args.eval_method}")
 
