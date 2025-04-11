@@ -1,9 +1,9 @@
 import logging
 from typing import List, Dict, Any
-from model_match.models import get_model
-from model_match.utils.helper import format_prompt
+from modelmatch.models import get_model
+from modelmatch.utils.helper import format_prompt
 # Import the factory and result class
-from model_match.evaluation import get_evaluator, EvaluationResult
+from modelmatch.evaluation import get_evaluator, EvaluationResult
 
 logger = logging.getLogger(__name__)
 

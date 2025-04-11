@@ -33,8 +33,8 @@ except ImportError:
          def __str__(self): return f"--- {self.title} ---\n{self.content}\n------------------"
 
 
-from model_match.evaluation.base_eval import BaseEvaluator, EvaluationResult
-from model_match.utils.helper import format_prompt # To show the exact prompt
+from modelmatch.evaluation.base_eval import BaseEvaluator, EvaluationResult
+from modelmatch.utils.helper import format_prompt # To show the exact prompt
 
 # Get logger
 logger = logging.getLogger(__name__)

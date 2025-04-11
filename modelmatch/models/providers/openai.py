@@ -1,7 +1,7 @@
 import logging # Import logging
 import openai
-from model_match.models.base import LLM
-from model_match.config import settings
+from modelmatch.models.base import LLM
+from modelmatch.config import settings
 
 # Get a logger for this module
 logger = logging.getLogger(__name__)

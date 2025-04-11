@@ -2,9 +2,9 @@ import logging
 import json
 from typing import List, Dict, Any, Tuple
 
-from model_match.models.base import LLM # Need the LLM type hint
-from model_match.evaluation.base_eval import BaseEvaluator, EvaluationResult
-from model_match.utils.helper import format_prompt # To show the exact prompt
+from modelmatch.models.base import LLM # Need the LLM type hint
+from modelmatch.evaluation.base_eval import BaseEvaluator, EvaluationResult
+from modelmatch.utils.helper import format_prompt # To show the exact prompt
 
 # Get logger
 logger = logging.getLogger(__name__)

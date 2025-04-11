@@ -2,7 +2,7 @@ import logging
 from .base_eval import BaseEvaluator, EvaluationResult
 from .human import HumanEvaluator
 from .reasoning import ReasoningEvaluator
-from model_match.models.base import LLM # For type hinting
+from modelmatch.models.base import LLM # For type hinting
 
 logger = logging.getLogger(__name__)
 
