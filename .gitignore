@@ -1,0 +1,30 @@
+# Poetry / Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Secrets
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
