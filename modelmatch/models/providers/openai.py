@@ -18,8 +18,8 @@ class OpenAIModel(LLM):
 
         # Recommended: Initialize the client instance once
         try:
-            # Ensure API key is set for the library instance or globally
-            # Using the instance-based client is generally preferred
+            if(settings.OPENAI_API_KEY == None):
+                raise Exception("Open AI API Key Not Set")
             self.client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
             logger.debug("OpenAI client initialized successfully.")
         except Exception as e:
@@ -30,21 +30,18 @@ class OpenAIModel(LLM):
         """Generates text using the specified OpenAI model."""
         logger.debug(f"Generating text with OpenAI model: {self.model_id}")
         try:
-            # Using ChatCompletion API - adjust parameters as needed
+            # Using ChatCompletion API 
             chat_response = self.client.chat.completions.create(
                 model=self.model_id,
                 messages=[
                     {"role": "user", "content": prompt}
-                ],
-                max_tokens=500, # Consider making this configurable
-                temperature=0.7 # Consider making this configurable
+                ]
             )
             response_text = chat_response.choices[0].message.content.strip()
             logger.debug(f"OpenAI response received (length: {len(response_text)} chars).")
             # Log token usage if needed (and available in response)
             if usage := getattr(chat_response, 'usage', None):
                  logger.debug(f"OpenAI API usage for {self.model_id}: Prompt={usage.prompt_tokens}, Completion={usage.completion_tokens}, Total={usage.total_tokens}")
-
             return response_text
 
         except openai.APIError as e:
