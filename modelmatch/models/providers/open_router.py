@@ -21,7 +21,7 @@ class OpenRouterModel(LLM):
             if(settings.OPEN_ROUTER_API_KEY == None):
                 raise Exception("Open Router API Key Not Set")
             self.client = openai.OpenAI(base_url = "https://openrouter.ai/api/v1",
-                                        api_key=settings.OPENAI_API_KEY)
+                                        api_key=settings.OPEN_ROUTER_API_KEY)
             logger.debug("Open Router client initialized successfully.")
         except Exception as e:
             logger.error(f"Failed to initialize Open Router client: {e}", exc_info=True)

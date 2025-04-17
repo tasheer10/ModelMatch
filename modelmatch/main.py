@@ -110,7 +110,8 @@ def main():
             data_points=input_data["data"],
             model_ids=model_list,
             eval_method=args.eval_method,
-            reasoning_model_id=reasoning_model_id
+            reasoning_model_id=reasoning_model_id,
+            max_workers=args.max_workers
         )
         logger.info("Comparison process finished successfully.")
     except Exception as e:

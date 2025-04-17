@@ -14,6 +14,12 @@ dependencies = [
     "rich (>=14.0.0,<15.0.0)"
 ]
 
+[project.scripts]
+# Define your command-line script name here (e.g., 'modelmatch')
+# and point it to your main function: 'package_name.module_name:function_name'
+# Option A: If your source code folder is 'modelmatch/'
+modelmatch = "modelmatch.main:main"
+
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

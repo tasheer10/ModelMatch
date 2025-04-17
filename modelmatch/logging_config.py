@@ -16,7 +16,7 @@ def setup_logging(level: int = logging.INFO, log_format: str = LOG_FORMAT_DETAIL
         log_format: The format string for log messages.
     """
     # Get the root logger
-    logger = logging.getLogger('ModelMatch') # Get the root logger
+    logger = logging.getLogger() # Get the root logger
 
     # Prevent adding multiple handlers if called multiple times (e.g., in tests)
     if logger.hasHandlers():
