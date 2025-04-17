@@ -31,9 +31,6 @@ def load_json_data(filepath: str) -> Dict[str, Any]:
     except json.JSONDecodeError as e:
         logger.error(f"Could not decode JSON from {filepath}: {e}", exc_info=True)
         raise
-    except ValueError as e:
-        # Error already logged during validation check
-        raise
     except Exception as e:
         logger.error(f"An unexpected error occurred loading {filepath}: {e}", exc_info=True)
         raise

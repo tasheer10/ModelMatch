@@ -1,4 +1,4 @@
-import logging # Import logging
+import logging
 import openai
 from modelmatch.models.base import LLM
 from modelmatch.config import settings
@@ -6,7 +6,7 @@ from modelmatch.config import settings
 # Get a logger for this module
 logger = logging.getLogger(__name__)
 
-class OpenRouter(LLM):
+class OpenRouterModel(LLM):
     """Concrete implementation for OpenRouter models."""
 
     def __init__(self, model_id: str):

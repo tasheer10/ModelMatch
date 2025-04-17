@@ -6,7 +6,7 @@ from modelmatch.config import settings
 # Get a logger for this module
 logger = logging.getLogger(__name__)
 
-class Google(LLM):
+class GoogleModel(LLM):
     """Concrete implementation for Google models."""
 
     def __init__(self, model_id: str):
@@ -35,7 +35,7 @@ class Google(LLM):
                                                                     contents=prompt,
                                                                 )
             response_text = chat_response.text
-            logger.debug(f"Open Router response received (length: {len(response_text)} chars).")
+            logger.debug(f"Google API Response response received (length: {len(response_text)} chars).")
             return response_text
         except Exception as e:
             logger.error(f"An unexpected error occurred with Open Router model {self.model_id}: {e}", exc_info=True)

@@ -33,12 +33,8 @@ def main():
     parser.add_argument('-e', '--eval-method', required=True, choices=['human', 'reasoning'], type=str.lower, help='Evaluation method.')
     parser.add_argument('-r', '--reasoning-model', type=str, default=None, help='Model ID to use for reasoning evaluation (required if --eval-method=reasoning).')
     parser.add_argument('-o', '--output-file', type=str, default=None, help='Optional path to save the results JSON.')
-    # Optional: Add log level argument
-    parser.add_argument(
-        '--log-level',
-        default='INFO',
-        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-        help='Set the logging level (default: INFO)'
+    parser.add_argument('--log-level', default='INFO', choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'], help='Set the logging level (default: INFO)')
+    parser.add_argument('--max-workers',type=int,default=None, help='Maximum number of threads to use for parallel model calls per data point. (default: Python decides)'
     )
 
     args = parser.parse_args()
@@ -100,16 +96,16 @@ def main():
 
     # --- Load Data ---
     try:
-        input_data = load_json_data(args.input_file) # helpers.py needs logging too
+        input_data = load_json_data(args.input_file)
         logger.info(f"Successfully loaded data for prompt template and {len(input_data.get('data',[]))} data points.")
     except Exception as e:
-        logger.error(f"Failed to load input data: {e}", exc_info=True) # Log traceback
+        logger.error(f"Failed to load input data: {e}", exc_info=True)
         sys.exit(1)
 
     # --- Call the core runner ---
     logger.info("Starting comparison process...")
     try:
-        results = runner.run_comparison( # runner.py needs logging too
+        results = runner.run_comparison(
             prompt_template=input_data["prompt_template"],
             data_points=input_data["data"],
             model_ids=model_list,

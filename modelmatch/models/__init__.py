@@ -1,6 +1,8 @@
-import logging # Import
+import logging 
 from .base import LLM
 from .providers.openai import OpenAIModel
+from .providers.google import GoogleModel
+from .providers.open_router import OpenRouterModel
 # Import other providers here as they are created
 # from .providers.gemini import GeminiModel
 # from .providers.mistral import MistralModel
@@ -9,10 +11,11 @@ from .providers.openai import OpenAIModel
 logger = logging.getLogger(__name__)
 # Add more models here as needed
 _SUPPORTED_MODELS = {
-    "gpt-4o": OpenAIModel,
-    "gpt-3.5-turbo": OpenAIModel,
-    # "gemini-1.5-pro": GeminiModel,
-    # "mistral-large-latest": MistralModel,
+    #"gpt-4o": OpenAIModel,
+    #"gpt-3.5-turbo": OpenAIModel,
+    "meta-llama/llama-3.3-70b-instruct:free":OpenRouterModel,
+    "mistralai/mistral-small-24b-instruct-2501:free":OpenRouterModel,
+    "gemini-2.0-flash-thinking-exp":GoogleModel
 }
 
 def get_model(model_name: str) -> LLM:

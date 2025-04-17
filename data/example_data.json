@@ -1,0 +1,8 @@
+{
+    "prompt_template": "Extract the key entities (people, organizations, locations) from the following text:\n\nText: {data}\n\nEntities:",
+    "data": [
+      "Apple Inc. announced yesterday that Tim Cook visited their new campus in Cupertino.",
+      "The Eiffel Tower in Paris is a famous landmark visited by millions.",
+      "Satya Nadella leads Microsoft, which is headquartered in Redmond, Washington."
+    ]
+  }
