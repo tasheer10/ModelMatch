@@ -1,0 +1,29 @@
+# config/models.yaml
+models:
+  - display_name: "gpt-4o"     
+    model_id: "gpt-4o"              
+    provider: "OpenAIModel"              
+
+  - display_name: "gpt-3.5-turbo"
+    model_id: "gpt-3.5-turbo"
+    provider: "OpenAIModel"
+
+  - display_name: "llama-3.3-70b-instruct"
+    model_id: "meta-llama/llama-3.3-70b-instruct:free" 
+    provider: "OpenRouterModel"      
+
+  - display_name: "llama-4-maverick"
+    model_id: "meta-llama/llama-4-maverick:free" 
+    provider: "OpenRouterModel"    
+
+  - display_name: "llama-4-scout"
+    model_id: "meta-llama/llama-4-scout:free" 
+    provider: "OpenRouterModel" 
+  
+  - display_name: "mistral-24b-instruct"
+    model_id: "mistralai/mistral-small-24b-instruct-2501:free" 
+    provider: "OpenRouterModel"
+
+  - display_name: "geminin-2.0-flash-thinking"
+    model_id: "gemini-2.0-flash-thinking-exp"
+    provider: "GoogleModel"
