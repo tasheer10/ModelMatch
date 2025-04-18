@@ -38,6 +38,8 @@ class OpenRouterModel(LLM):
                     {"role": "user", "content": prompt}
                 ]
             )
+            if(chat_response.choices == None):
+                raise Exception(f"{chat_response.error['message']}")
             response_text = chat_response.choices[0].message.content.strip()
             logger.debug(f"Open Router response received (length: {len(response_text)} chars).")
             # Log token usage if needed (and available in response)
