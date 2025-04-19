@@ -15,8 +15,8 @@ ModelMatch is a Python framework designed to help developers and researchers com
 *   **Flexible Evaluation Methods:**
     *   **Human Evaluation:** Presents model outputs blindly (random order, anonymized) for human scoring (1-10).
     *   **Reasoning Model Evaluation:** Uses a designated LLM to assess and score the outputs from the models being compared.
-*   **Configuration Driven:** Define supported models and their properties via external YAML files (`config/models.yaml`).
-*   **Customizable Reasoning:** Edit the prompt used for the reasoning model evaluator (`config/reasoning_prompt.txt`).
+*   **Configuration Driven:** Define supported models and their properties via external YAML files (`model_config.yaml`).
+*   **Customizable Reasoning:** Edit the prompt used for the reasoning model evaluator (`evaluation_prompt.txt`).
 *   **Parallel Execution:** Utilizes threading to run API calls to different models concurrently for faster results.
 *   **Command-Line Interface:** Easy-to-use CLI for running comparisons and configuring options.
 *   **User-Friendly Model Selection:** Refer to models by either their API ID or a user-defined display name in CLI arguments.
@@ -63,7 +63,7 @@ ModelMatch is a Python framework designed to help developers and researchers com
 ModelMatch is run from the command line. Ensure your virtual environment is active (`poetry shell`) or prefix commands with `poetry run`.
 
 **1. List Available Models:**
-Check which models are configured in `config/models.yaml`:
+Check which models are configured in `model_config.yaml`:
 ```bash
 modelmatch --list-models
 ```
@@ -72,7 +72,7 @@ modelmatch --list-models
 Use model display names (quotes needed if they contain spaces).
 ```bash
 modelmatch -i data/example_input.json \
-           -m "OpenAI: GPT-4o","OpenRouter: Llama 3.1 70B Instruct (Free)" \
+           -m "llama-3.3-70b-instruct,mistral-24b-instruct" \
            -e human
 ```
 *(You will be prompted interactively to score outputs.)*
@@ -81,9 +81,9 @@ modelmatch -i data/example_input.json \
 Use a mix of display names and model IDs.
 ```bash
 modelmatch -i data/example_input.json \
-           -m "OpenAI: GPT-4o",meta-llama/llama-3.1-70b-instruct:free \
+           -m "llama-3.3-70b-instruct,mistral-24b-instruct" \
            -e reasoning \
-           -r "OpenAI: GPT-4o" # Use display name or ID for the reasoning model
+           -r "geminin-2.0-flash-thinking" # Use display name
 ```
 
 **4. Show Detailed Results on Console:**
@@ -115,11 +115,11 @@ modelmatch -i data/input.json -m m1,m2 -e human -o my_comparison_results.json
 ## ⚙️ Configuration
 
 *   **API Keys (`.env`):** Store your sensitive API keys in the `.env` file in the project root. See `.env.example`.
-*   **Models (`config/models.yaml`):** Define the LLMs available for comparison. Each entry under the `models:` list requires:
+*   **Models (`model_config.yaml`):** Define the LLMs available for comparison. Each entry under the `models:` list requires:
     *   `display_name`: User-friendly name used in CLI arguments and output. Should ideally be unique.
     *   `model_id`: The exact identifier required by the provider's API. Must be unique.
     *   `provider`: The name of the Python class in `modelmatch/models/providers/` that handles this model type (e.g., `OpenAIModel`, `OpenRouterModel`). Ensure the class exists and is mapped in `modelmatch/models/__init__.py`.
-*   **Reasoning Prompt (`config/reasoning_prompt.txt`):** Modify this file to customize the instructions given to the reasoning model during AI-based evaluation. Ensure the placeholders (`{original_prompt}`, `{data_point}`, `{outputs_section}`, `{json_format_example}`) are kept.
+*   **Reasoning Prompt (`evaluation_prompt.txt`):** Modify this file to customize the instructions given to the reasoning model during AI-based evaluation. Ensure the placeholders (`{original_prompt}`, `{data_point}`, `{outputs_section}`, `{json_format_example}`) are kept.
 
 ## 💾 Input Data Format
 
@@ -149,8 +149,8 @@ Input data is provided via a JSON file specified with the `-i` argument. It shou
     *   Scores are averaged per model across all data points.
 *   **Reasoning (`-e reasoning -r <reasoning_model>`):**
     *   For each data point, the original prompt, input data, and all valid model outputs are sent to the specified reasoning LLM.
-    *   The reasoning LLM is prompted (using `config/reasoning_prompt.txt`) to score each output (1-10) and provide justification, returning structured JSON.
-    *   These scores are parsed and averaged per model. Requires careful prompt engineering in `config/reasoning_prompt.txt` for reliable results.
+    *   The reasoning LLM is prompted (using `evaluation_prompt.txt`) to score each output (1-10) and provide justification, returning structured JSON.
+    *   These scores are parsed and averaged per model. Requires careful prompt engineering in `evaluation_prompt.txt` for reliable results.
 
 ## 📄 Output Format
 
@@ -180,7 +180,6 @@ Adding support for new LLM providers is designed to be straightforward:
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for bugs, feature requests, or improvements.
-*(Consider adding details about development setup, running tests, code style, etc. if applicable)*
 
 ## 📜 License
 

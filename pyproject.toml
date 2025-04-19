@@ -6,7 +6,7 @@ authors = [
     {name = "Tasheer Hussain"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "python-dotenv (>=1.1.0,<2.0.0)",
     "google-genai (>=1.11.0,<2.0.0)",
@@ -16,9 +16,6 @@ dependencies = [
 ]
 
 [project.scripts]
-# Define your command-line script name here (e.g., 'modelmatch')
-# and point it to your main function: 'package_name.module_name:function_name'
-# Option A: If your source code folder is 'modelmatch/'
 modelmatch = "modelmatch.main:main"
 
 
