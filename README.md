@@ -25,7 +25,7 @@ ModelMatch is a Python framework designed to help developers and researchers com
 ## 🚀 Installation
 
 1.  **Prerequisites:**
-    *   Python (>=3.12 recommended, check `pyproject.toml`)
+    *   Python (>=3.11 recommended, check `pyproject.toml`)
     *   Poetry (>=1.2 recommended) for dependency management. See [Poetry installation guide](https://python-poetry.org/docs/#installation).
 
 2.  **Clone the Repository:**
