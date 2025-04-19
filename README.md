@@ -30,7 +30,7 @@ ModelMatch is a Python framework designed to help developers and researchers com
 
 2.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/your-username/ModelMatch.git # Replace with your repo URL
+    git clone https://github.com/tasheer10/ModelMatch.git
     cd ModelMatch
     ```
 
