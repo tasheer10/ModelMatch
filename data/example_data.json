@@ -1,8 +1,14 @@
 {
-    "prompt_template": "Extract the key entities (people, organizations, locations) from the following text:\n\nText: {data}\n\nEntities:",
-    "data": [
-      "Apple Inc. announced yesterday that Tim Cook visited their new campus in Cupertino.",
-      "The Eiffel Tower in Paris is a famous landmark visited by millions.",
-      "Satya Nadella leads Microsoft, which is headquartered in Redmond, Washington."
-    ]
-  }
+  "prompt_template": "You are an expert meeting analyst. Analyze the following meeting transcript excerpt. Provide a concise summary (max 3 sentences), list key decisions made, and extract specific action items with assigned owners (if mentioned). Respond ONLY with a JSON object containing 'summary', 'decisions' (list of strings), and 'action_items' (list of objects with 'task' and 'owner' keys).\n\nTranscript Excerpt:\n```\n{transcript}\n```\n\nAnalysis JSON:",
+  "data": [
+    {
+      "transcript": "Okay team, project Alpha update. Marketing campaign launch is set for July 15th, that's final - Sarah to confirm budget by EOD Friday. John mentioned the server migration needs a P0 fix, he'll coordinate with Infra Ops immediately. Design mockups look good, Lisa needs feedback by Wednesday. Any blockers? No? Great."
+    },
+    {
+      "transcript": "Discussion point: Q4 roadmap. We agreed to prioritize the 'User Profile V2' feature. Feature 'Analytics Dashboard' is pushed to Q1. Mark will draft the initial spec for V2 and share it next Monday for review. We need to de-scope 'Real-time Collaboration' for now due to resource constraints. Decision stands."
+    },
+    {
+      "transcript": "Client feedback call summary: Positive overall, but they highlighted slow loading times on the main dashboard again. Critical issue. Peter, can you investigate the backend performance this week? We need to provide them an update in the Friday sync. Also discussed expanding the reporting features, but no decision made, tabled for next time."
+    }
+  ]
+}

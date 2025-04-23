@@ -4,7 +4,7 @@ _Choose the right LLM, every time._
 <!-- Add badges here later: e.g., build status, version, license -->
 <!-- [![Build Status](https://img.shields.io/travis/your-username/ModelMatch.svg?style=flat-square)](https://travis-ci.org/your-username/ModelMatch) -->
 <!-- [![PyPI version](https://img.shields.io/pypi/v/modelmatch.svg?style=flat-square)](https://pypi.org/project/modelmatch/) -->
-<!-- [![License](https://img.shields.io/pypi/l/modelmatch.svg?style=flat-square)](LICENSE) -->
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 ModelMatch is a Python framework designed to help developers and researchers compare and evaluate the outputs of various Large Language Models (LLMs) for specific prompts and datasets. Selecting the optimal LLM for a particular use case can be challenging; ModelMatch provides a structured approach to gather outputs and assess their quality through either human judgment or automated evaluation using a separate reasoning LLM.
 
@@ -17,6 +17,7 @@ ModelMatch is a Python framework designed to help developers and researchers com
     *   **Reasoning Model Evaluation:** Uses a designated LLM to assess and score the outputs from the models being compared.
 *   **Configuration Driven:** Define supported models and their properties via external YAML files (`model_config.yaml`).
 *   **Customizable Reasoning:** Edit the prompt used for the reasoning model evaluator (`evaluation_prompt.txt`).
+
 *   **Parallel Execution:** Utilizes threading to run API calls to different models concurrently for faster results.
 *   **Command-Line Interface:** Easy-to-use CLI for running comparisons and configuring options.
 *   **User-Friendly Model Selection:** Refer to models by either their API ID or a user-defined display name in CLI arguments.
@@ -68,7 +69,7 @@ Check which models are configured in `model_config.yaml`:
 modelmatch --list-models
 ```
 
-**2. Run a Comparison (Human Evaluation):**
+**2. Run a Comparison (Human Evaluation Example):**
 Use model display names (quotes needed if they contain spaces).
 ```bash
 modelmatch -i data/example_input.json \
@@ -77,26 +78,26 @@ modelmatch -i data/example_input.json \
 ```
 *(You will be prompted interactively to score outputs.)*
 
-**3. Run a Comparison (Reasoning Model Evaluation):**
+**3. Run a Comparison (Reasoning Model Example):**
 Use a mix of display names and model IDs.
 ```bash
 modelmatch -i data/example_input.json \
-           -m "llama-3.3-70b-instruct,mistral-24b-instruct" \
+           -m llama-4-maverick,mistral-24b-instruct \
            -e reasoning \
-           -r "geminin-2.0-flash-thinking" # Use display name
+           -r "gemini-2.0-flash-thinking-exp" # Use display name or ID for reasoning model
 ```
 
 **4. Show Detailed Results on Console:**
 Add the `--show-details` flag to any evaluation run to see scores/reasoning per data point.
 ```bash
 modelmatch -i data/example_input.json \
-           -m model1,model2 \
-           -e reasoning -r model3 \
+           -m llama-4-maverick,mistral-24b-instruct \
+           -e reasoning  -r "gemini-2.0-flash-thinking-exp" \
            --show-details
 ```
 
 **5. Save Full JSON Output to a Specific File:**
-Results are saved to `modelmatch_results.json` by default.
+Results are saved to `modelmatch_results.json` by default. Use `-o` to specify a different path.
 ```bash
 modelmatch -i data/input.json -m m1,m2 -e human -o my_comparison_results.json
 ```
@@ -111,6 +112,88 @@ modelmatch -i data/input.json -m m1,m2 -e human -o my_comparison_results.json
 *   `--max-workers`: Max parallel threads for API calls per data point (default: Python decides).
 *   `--list-models`: List configured models and exit.
 *   `--show-details`: Display detailed evaluation results for each data point on the console.
+
+## Example Scenario: Meeting Summary & Action Item Generation
+
+This example demonstrates comparing LLMs for processing meeting transcripts to generate concise summaries, identify key decisions, and extract actionable items, all formatted as structured JSON. This task requires understanding context, identifying importance, and adhering to a specific output schema.
+
+**1. Prepare Input Data (`data/example_data.json`):**
+
+Create a JSON file containing snippets of meeting transcripts (or full transcripts).
+
+```json
+{
+  "prompt_template": "You are an expert meeting analyst. Analyze the following meeting transcript excerpt. Provide a concise summary (max 3 sentences), list key decisions made, and extract specific action items with assigned owners (if mentioned). Respond ONLY with a JSON object containing 'summary', 'decisions' (list of strings), and 'action_items' (list of objects with 'task' and 'owner' keys).\n\nTranscript Excerpt:\n```\n{transcript}\n```\n\nAnalysis JSON:",
+  "data": [
+    {
+      "transcript": "Okay team, project Alpha update. Marketing campaign launch is set for July 15th, that's final - Sarah to confirm budget by EOD Friday. John mentioned the server migration needs a P0 fix, he'll coordinate with Infra Ops immediately. Design mockups look good, Lisa needs feedback by Wednesday. Any blockers? No? Great."
+    },
+    {
+      "transcript": "Discussion point: Q4 roadmap. We agreed to prioritize the 'User Profile V2' feature. Feature 'Analytics Dashboard' is pushed to Q1. Mark will draft the initial spec for V2 and share it next Monday for review. We need to de-scope 'Real-time Collaboration' for now due to resource constraints. Decision stands."
+    },
+    {
+      "transcript": "Client feedback call summary: Positive overall, but they highlighted slow loading times on the main dashboard again. Critical issue. Peter, can you investigate the backend performance this week? We need to provide them an update in the Friday sync. Also discussed expanding the reporting features, but no decision made, tabled for next time."
+    }
+  ]
+}
+```
+*(Note: The prompt requires specific JSON keys and value types, testing schema adherence.)*
+
+**2. Configure Models:**
+
+Ensure models like "llama-4-maverick,mistral-24b-instruct", and potentially a more specialized or fine-tuned model are defined in `model_config.yaml` with keys in `.env`. We'll also use "gemini-2.0-flash-thinking-exp" as the reasoning evaluator.
+
+**3. Run the Comparison (using Reasoning Model with Details):**
+
+Execute ModelMatch, requesting detailed output to analyze the reasoning:
+
+```bash
+modelmatch -i data/example_data.json \
+           -m llama-4-maverick,mistral-24b-instruct \
+           -e reasoning \
+           -r "gemini-2.0-flash-thinking-exp" \
+           --show-details
+```
+
+**4. Review Results:**
+
+ModelMatch performs the following:
+*   Executes the analysis prompt for each transcript excerpt on both "Llama 4" and "Mistral".
+*   Sends each transcript, the prompt, and the two generated JSON outputs to the reasoning model ("Gemini Thinking Experimental"). The reasoning prompt (`evaluation_prompt.txt`) should guide it to evaluate:
+    *   Accuracy of summary, decisions, and action items.
+    *   Completeness (were all items captured?).
+    *   Correctness of owner assignment.
+    *   Strict adherence to the requested JSON schema (keys, types).
+    *   Conciseness of the summary.
+*   Parses the scores and reasoning.
+*   Displays the summary table and detailed results (because of `--show-details`) on the console.
+*   Saves the comprehensive results to `modelmatch_results.json`.
+
+By reviewing the detailed output, especially the reasoning provided by the evaluator for each data point, you can gain insights beyond just the average score. For example, one model might consistently produce valid JSON but miss subtle action items, while another might capture everything but occasionally fail on the JSON structure. This helps you choose the model that best balances accuracy, completeness, and reliability for *this specific structured generation task*.
+
+## Sample Output
+
+After running a comparison, ModelMatch provides output both on the console and in a detailed JSON file.
+
+**1. Console Output (Summary)**
+
+The console output provides a high-level summary, including run parameters and the ranked average scores from the evaluation.
+
+![Console output summary table](data/example_outputs/SampleAnalysisReport.png "ModelMatch Console Summary Output")
+
+**2. Console Output (Detailed View)**
+
+Using the `--show-details` flag, you can see the evaluation results (scores and reasoning, if applicable) broken down for each data point and model directly in the console.
+
+![Detailed console output with reasoning per data point](data/example_outputs/SampleDetailedAnalysis.png "ModelMatch Detailed Console Output")
+
+**3. JSON Output File (`modelmatch_results.json` by default)**
+
+A comprehensive JSON file is saved, containing all parameters, the raw outputs generated by each model for every data point, and the full evaluation results (average and detailed scores/reasoning). This is useful for archival, programmatic analysis, or deeper dives.
+
+![Snippet of the output JSON file structure](data/example_outputs/SampleResultJson.png "ModelMatch JSON Output Snippet")
+
+This detailed JSON allows you to programmatically analyze results, review specific outputs, and understand the reasoning behind the scores (if using the reasoning evaluator).
 
 ## ⚙️ Configuration
 
@@ -175,7 +258,7 @@ Adding support for new LLM providers is designed to be straightforward:
 3.  **Map Provider:** In `modelmatch/models/__init__.py`:
     *   Import your new class (e.g., `from .providers.anthropic import AnthropicModel`).
     *   Add an entry to the `PROVIDER_MAP` dictionary (e.g., `"AnthropicModel": AnthropicModel`).
-4.  **Configure Models:** Add entries for the specific models using this provider in `config/models.yaml`, ensuring the `provider` key matches the class name string used in `PROVIDER_MAP`.
+4.  **Configure Models:** Add entries for the specific models using this provider in `model_config.yaml`, ensuring the `provider` key matches the class name string used in `PROVIDER_MAP`.
 
 ## 🤝 Contributing
 
@@ -183,4 +266,4 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE). <!-- Choose and add your LICENSE file -->
+This project is licensed under the [MIT License](LICENSE).
